@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Trình rút gọn link và tạo mã QR tùy chỉnh chuyên nghiệp. Copy liên kết rút gọn nhanh và tải xuống QR code chất lượng cao.">
+    <title>QRLnk - Rút Gọn Link & Thiết Kế Mã QR Chuyên Nghiệp</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- QRCodeStyling Library CDN -->
+    <script type="text/javascript" src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+    <!-- App Script -->
+    <script src="app.js" defer></script>
+</head>
+<body>
+
+    <!-- Animated Mesh Background Elements -->
+    <div class="bg-mesh"></div>
+    <div class="bg-circle circle-1"></div>
+    <div class="bg-circle circle-2"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <div class="logo-icon">
+                    <!-- SVG Link + QR Logo -->
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="8" height="8" rx="2"></rect>
+                        <rect x="2" y="14" width="8" height="8" rx="2"></rect>
+                        <rect x="14" y="2" width="8" height="8" rx="2"></rect>
+                        <path d="M16 14h2a2 2 0 0 1 2 2v2"></path>
+                        <path d="M20 14v.01"></path>
+                        <path d="M14 18v.01"></path>
+                        <path d="M14 20h2"></path>
+                        <circle cx="6" cy="6" r="1" fill="currentColor"></circle>
+                        <circle cx="6" cy="18" r="1" fill="currentColor"></circle>
+                        <circle cx="18" cy="6" r="1" fill="currentColor"></circle>
+                    </svg>
+                </div>
+                <h1>QRLnk</h1>
+            </div>
+            
+            <button id="themeToggleBtn" class="theme-btn" aria-label="Chuyển đổi giao diện">
+                <!-- SVG Sun/Moon Icon -->
+                <svg id="themeToggleIcon" viewBox="0 0 24 24">
+                    <!-- Dark mode icon (Moon) -->
+                    <path class="moon-path" d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/>
+                </svg>
+            </button>
+        </header>
+
+        <!-- Main Workspace Grid -->
+        <main class="main-grid">
+            
+            <!-- Left Side: Shortener Inputs & QR Configurations -->
+            <div class="card">
+                <div class="card-title">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                    </svg>
+                    <span>Rút gọn Link & Tạo mã QR</span>
+                </div>
+
+                <form id="shortenForm" class="result-section" style="display: flex;">
+                    <div class="form-group">
+                        <label for="longUrl">Nhập liên kết của bạn</label>
+                        <div class="input-container">
+                            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="2" y1="12" x2="22" y2="12"></line>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                            </svg>
+                            <input type="url" id="longUrl" class="input-field" placeholder="https://example.com/duong-dan-dai..." required>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="btn-primary">
+                        <div class="spinner"></div>
+                        <span class="btn-text">Rút gọn & Tạo mã QR</span>
+                        <svg class="btn-text" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                    </button>
+                </form>
+
+                <!-- Shorten Result Display -->
+                <div id="resultContainer" class="result-section">
+                    <div class="form-group">
+                        <label>Liên kết rút gọn</label>
+                        <div class="result-box">
+                            <span id="shortenedUrl" class="result-url">https://tinyurl.com/XXXXXX</span>
+                            <div class="action-buttons">
+                                <button id="copyBtn" class="btn-icon" title="Sao chép">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                </button>
+                                <button id="openBtn" class="btn-icon" title="Mở link">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                        <polyline points="15 3 21 3 21 9"></polyline>
+                                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Customization Panel Accordion -->
+                <div class="accordion active" id="stylingAccordion">
+                    <div class="accordion-header" id="accordionToggle">
+                        <span class="accordion-title">Tùy biến QR Code chuyên nghiệp</span>
+                        <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+
+                    <div class="accordion-content">
+                        <!-- Controls Grid -->
+                        <div class="control-grid">
+                            <div class="form-group">
+                                <label for="dotsTypeSelect">Kiểu điểm chấm (Dots)</label>
+                                <div class="select-wrapper">
+                                    <select id="dotsTypeSelect">
+                                        <option value="rounded" selected>Bo tròn góc (Rounded)</option>
+                                        <option value="dots">Dạng chấm (Dots)</option>
+                                        <option value="classy">Lịch lãm (Classy)</option>
+                                        <option value="classy-rounded">Lịch lãm tròn (Classy Rounded)</option>
+                                        <option value="square">Mặc định vuông (Square)</option>
+                                        <option value="extra-rounded">Siêu tròn (Extra Rounded)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cornersTypeSelect">Kiểu góc ngoài (Corners)</label>
+                                <div class="select-wrapper">
+                                    <select id="cornersTypeSelect">
+                                        <option value="extra-rounded" selected>Siêu tròn (Extra Rounded)</option>
+                                        <option value="rounded">Tròn thường (Rounded)</option>
+                                        <option value="dot">Vòng tròn (Dot)</option>
+                                        <option value="square">Mặc định vuông (Square)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Color Customizations -->
+                        <div class="control-grid">
+                            <div class="form-group">
+                                <label>Màu sắc mã QR</label>
+                                <div class="color-pickers">
+                                    <div class="color-input-wrapper">
+                                        <input type="color" id="dotsColor" class="color-box" value="#6366f1">
+                                        <label for="dotsColor">Chấm</label>
+                                    </div>
+                                    <div class="color-input-wrapper">
+                                        <input type="color" id="bgColor" class="color-box" value="#ffffff">
+                                        <label for="bgColor">Màu nền</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cornersDotTypeSelect">Kiểu điểm góc (Corner Dots)</label>
+                                <div class="select-wrapper">
+                                    <select id="cornersDotTypeSelect">
+                                        <option value="dot" selected>Chấm tròn (Dot)</option>
+                                        <option value="square">Hình vuông (Square)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Logo Image Upload -->
+                        <div class="form-group">
+                            <label>Logo chèn ở trung tâm (Tùy chọn)</label>
+                            <div class="file-upload">
+                                <svg class="file-upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                    <polyline points="21 15 16 10 5 21"></polyline>
+                                </svg>
+                                <span class="file-upload-text">Nhấp vào đây hoặc kéo thả ảnh để thêm Logo (.png, .jpg)</span>
+                                <input type="file" id="logoUpload" accept="image/png, image/jpeg">
+                            </div>
+                            
+                            <!-- Uploaded Info Bar -->
+                            <div class="file-uploaded-info" id="logoInfo">
+                                <span id="logoFileName">logo.png</span>
+                                <button type="button" id="removeLogoBtn" title="Xóa Logo">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- QR Code Size Selector -->
+                        <div class="form-group" style="border-top: 1px solid var(--card-border); padding-top: 1rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <label for="qrSize">Kích thước xuất ra</label>
+                                <span id="qrSizeVal" style="font-size: 0.85rem; font-weight: 600; color: var(--accent-primary);">300 x 300 px</span>
+                            </div>
+                            <input type="range" id="qrSize" min="200" max="600" step="50" value="300" style="width: 100%; height: 6px; background: var(--input-bg); border-radius: 3px; outline: none; margin-top: 0.5rem; -webkit-appearance: none;">
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Side: QR Code Live Preview -->
+            <div class="card qr-preview-card">
+                <div class="card-title" style="justify-content: center; border: none; padding: 0;">
+                    <span>Xem trước mã QR</span>
+                </div>
+                
+                <div class="qr-canvas-container">
+                    <div id="qrCanvas"></div>
+                </div>
+
+                <div class="qr-actions">
+                    <div class="download-buttons">
+                        <button id="downloadPngBtn" class="btn-primary">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            <span>Tải PNG</span>
+                        </button>
+                        <button id="downloadSvgBtn" class="btn-secondary">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            <span>Tải SVG</span>
+                        </button>
+                    </div>
+                    <button id="resetBtn" class="btn-secondary" style="border-style: dashed;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                        </svg>
+                        <span>Đặt lại thiết kế</span>
+                    </button>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2026 QRLnk. Được thiết kế và xây dựng bởi <a href="#" target="_blank" rel="noopener noreferrer">Antigravity</a>.</p>
+        </footer>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+</body>
+</html>
