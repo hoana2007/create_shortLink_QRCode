@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             //const shortUrl = await shortenUrl(originalUrl);
             const shortUrl = await originalUrl;
-            qrTargetUrl = shortUrl;
+            qrTargetUrl = originalUrl;
             
             // Show result link
             shortenedUrlElem.textContent = shortUrl;
