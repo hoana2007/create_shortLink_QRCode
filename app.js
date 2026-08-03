@@ -187,8 +187,8 @@ document.addEventListener('DOMContentLoaded', () => {
         submitBtn.classList.add('loading');
 
         try {
-            //const shortUrl = await shortenUrl(originalUrl);
-            const shortUrl = await originalUrl;
+            const shortUrl = await shortenUrl(originalUrl);
+            //const shortUrl = await originalUrl;
             qrTargetUrl = originalUrl;
             
             // Show result link
